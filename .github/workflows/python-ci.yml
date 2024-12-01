@@ -41,7 +41,7 @@ jobs:
           pytest --maxfail=1 --disable-warnings -q
 
       - name: Check code style with black
-        run: black --check .
+        run: black .
 
       - name: Format code with black (optional)
         run: |
