@@ -19,7 +19,7 @@ sizes = {
 }
 
 def circle_perimeter(r):
-    return 2 * 3.14159 * r
+    return 2 * math.pi * r
 
 def circle_area(r):
     return 3.14159 * r ** 2
