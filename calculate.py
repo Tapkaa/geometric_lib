@@ -1,4 +1,7 @@
 import math
+import circle
+import square
+import triangle
 
 class InvalidShapeError(Exception):
     pass
