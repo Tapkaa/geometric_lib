@@ -1,5 +1,5 @@
 import pytest
-from calculate import calc
+from calculate import calc, InvalidShapeError
 
 # Тесты для корректных данных
 
@@ -84,7 +84,8 @@ def test_invalid_shape():
     size = [5]
 
     # Act
-    result = calc(fig, func, size)
+    with pytest.raises(InvalidShapeError):
+        calc(fig, func, size)
 
     # Assert
     assert result == "Invalid shape"  # Ожидаем сообщение об ошибке
