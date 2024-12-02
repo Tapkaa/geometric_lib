@@ -1,5 +1,6 @@
 import math
 import pytest
+from calculate import calc
 from circle import area, perimeter
 
 def test_circle_area():
@@ -14,11 +15,12 @@ def test_circle_area():
     assert result == pytest.approx(expected_result, rel=1e-9)
 
 def test_circle_perimeter():
-    fig = 'circle'
-    func = 'perimeter'
-    size = [5]
+    # Arrange
+    r = 5
 
-    result = calc(fig, func, size)
+    # Act
+    result = perimeter(r)
 
-    expected_result = 31.41592653589793
+    # Assert
+    expected_result = 2 * math.pi * r
     assert result == pytest.approx(expected_result, rel=1e-9)
