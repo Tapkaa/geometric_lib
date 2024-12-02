@@ -1,5 +1,5 @@
 import pytest
-from calculate import calc, InvalidShapeError, InvalidFunctionError, InvalidParametersError
+from geometric_lib.calculate import calc, InvalidShapeError, InvalidFunctionError, InvalidParametersError
 
 # Тесты для корректных данных
 
