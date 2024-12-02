@@ -16,12 +16,17 @@ def calc(fig, func, size):
     if func not in funcs:
         return "Invalid function"
 
-    if fig == 'circle' and len(size) != 1:
-        return "Invalid parameters for circle"
-    if fig == 'square' and len(size) != 1:
-        return "Invalid parameters for square"
-    if fig == 'triangle' and len(size) != 3:
-        return "Invalid parameters for triangle"
+    sizes = {
+    'circle-perimeter': 1, 'circle-area': 1,
+    'square-perimeter': 1, 'square-area': 1,
+    'triangle-perimeter': 3, 'triangle-area': 3
+}
+
+key = f'{fig}-{operation}'
+
+if key in sizes and len(size) != sizes[key]:
+    return f"Invalid parameters for {fig}"
+
     required_size = sizes.get(f'{fig}-{func}')
     if required_size is None:
         return f"Invalid combination of {fig} and {func}"
