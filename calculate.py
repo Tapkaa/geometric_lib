@@ -1,3 +1,7 @@
+import circle
+import square
+import triangle
+
 class InvalidShapeError(Exception):
     pass
 
@@ -9,11 +13,6 @@ class InvalidParametersError(Exception):
 
 class InvalidCombinationError(Exception):
     pass
-
-
-import circle
-import square
-import triangle
 
 figs = ['circle', 'square', 'triangle']
 funcs = ['perimeter', 'area']
