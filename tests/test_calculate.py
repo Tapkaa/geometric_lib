@@ -1,5 +1,5 @@
 import pytest
-from calculate import calc, InvalidShapeError, InvalidFunctionError
+from calculate import calc, InvalidShapeError, InvalidFunctionError, InvalidParametersError
 
 # Тесты для корректных данных
 
@@ -108,12 +108,13 @@ def test_invalid_size_for_square():
     fig = 'square'
     func = 'area'
     size = [4, 5]  # Слишком много параметров для квадрата
-
-    # Act
-    result = calc(fig, func, size)
-
-    # Assert
-    assert result == "Invalid parameters for square"  # Ожидаем сообщение об ошибке
+    
+    # Act & Assert
+    with pytest.raises(InvalidParametersError) as exc_info:  # Сохраняем информацию о выброшенном исключении
+        calc(fig, func, size)
+    
+    # Проверяем, что исключение содержит нужное сообщение
+    assert str(exc_info.value) == "Invalid parameters for square: expected 1 parameter, got 2"
 
 def test_invalid_size_for_circle():
     # Arrange
