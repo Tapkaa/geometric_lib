@@ -10,26 +10,24 @@ sizes = {
     'triangle-perimeter': 3, 'triangle-area': 3
 }
 
-
 def calc(fig, func, size):
     if fig not in figs:
         return "Invalid shape"
     if func not in funcs:
         return "Invalid function"
 
-    if fig == 'circle' and len(size) != 1:
-        return "Invalid parameters for circle"
-    if fig == 'square' and len(size) != 1:
-        return "Invalid parameters for square"
-    if fig == 'triangle' and len(size) != 3:
-        return "Invalid parameters for triangle"
+    required_size = sizes.get(f'{fig}-{func}')
+    if required_size is None:
+        return f"Invalid combination of {fig} and {func}"
+    
+    if len(size) != required_size:
+        return f"Invalid parameters for {fig}"
 
     try:
         result = eval(f'{fig}.{func}(*{size})')
         return result
     except Exception as e:
         return str(e)
-
 
 if __name__ == "__main__":
     func = ''
