@@ -1,6 +1,20 @@
+class InvalidShapeError(Exception):
+    pass
+
+class InvalidFunctionError(Exception):
+    pass
+
+class InvalidParametersError(Exception):
+    pass
+
+class InvalidCombinationError(Exception):
+    pass
+
+
 import circle
 import square
 import triangle
+
 figs = ['circle', 'square', 'triangle']
 funcs = ['perimeter', 'area']
 sizes = {
@@ -12,28 +26,29 @@ sizes = {
 
 def calc(fig, func, size):
     if fig not in figs:
-        return "Invalid shape"
+        raise InvalidShapeError(f"Invalid shape: {fig}")
     if func not in funcs:
-        return "Invalid function"
+        raise InvalidFunctionError(f"Invalid function: {func}")
 
     if fig == 'circle' and len(size) != 1:
-        return "Invalid parameters for circle"
+        raise InvalidParametersError(f"Invalid parameters for circle: {size}")
     if fig == 'square' and len(size) != 1:
-        return "Invalid parameters for square"
+        raise InvalidParametersError(f"Invalid parameters for square: {size}")
     if fig == 'triangle' and len(size) != 3:
-        return "Invalid parameters for triangle"
+        raise InvalidParametersError(f"Invalid parameters for triangle: {size}")
+
     required_size = sizes.get(f'{fig}-{func}')
     if required_size is None:
-        return f"Invalid combination of {fig} and {func}"
+        raise InvalidCombinationError(f"Invalid combination of {fig} and {func}")
 
     if len(size) != required_size:
-        return f"Invalid parameters for {fig}"
+        raise InvalidParametersError(f"Invalid parameters for {fig}: {size}")
 
     try:
         result = eval(f'{fig}.{func}(*{size})')
         return result
     except Exception as e:
-        return str(e)
+        raise Exception(f"An error occurred during calculation: {str(e)}")
 
 
 if __name__ == "__main__":
@@ -46,5 +61,8 @@ if __name__ == "__main__":
         func = input(f"Enter function name, available are {funcs}:\n")
     while len(size) != sizes.get(f"{func}-{fig}", 1):
         size = list(map(int, input("Input figure sizes separated by space, 1 for circle and square\n").split(' ')))
-    result = calc(fig, func, size)
-    print(f'{func} of {fig} is {result}')
+    try:
+        result = calc(fig, func, size)
+        print(f'{func} of {fig} is {result}')
+    except Exception as e:
+        print(f"Error: {e}")
