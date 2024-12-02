@@ -121,12 +121,13 @@ def test_invalid_size_for_circle():
     fig = 'circle'
     func = 'area'
     size = []  # Отсутствует параметр для круга
-
-    # Act
-    result = calc(fig, func, size)
-
-    # Assert
-    assert result == "Invalid parameters for circle"  # Ожидаем сообщение об ошибке
+    
+    # Act & Assert
+    with pytest.raises(InvalidParametersError) as exc_info:  # Поймать исключение
+        calc(fig, func, size)
+    
+    # Проверяем, что исключение содержит правильное сообщение
+    assert str(exc_info.value) == "Invalid parameters for circle: expected 1 parameter, got 0"
 
 def test_invalid_size_for_triangle():
     # Arrange
