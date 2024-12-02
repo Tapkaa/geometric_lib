@@ -83,12 +83,12 @@ def test_invalid_shape():
     func = 'perimeter'
     size = [5]
 
-    # Act
-    with pytest.raises(InvalidShapeError):
+    # Act & Assert
+    with pytest.raises(InvalidShapeError) as exc_info:  # Сохраняем информацию о выброшенном исключении
         calc(fig, func, size)
-
-    # Assert
-    assert result == "Invalid shape"  # Ожидаем сообщение об ошибке
+    
+    # Проверяем, что исключение содержит нужное сообщение
+    assert str(exc_info.value) == "Invalid shape: pentagon"
 
 def test_invalid_function():
     # Arrange
