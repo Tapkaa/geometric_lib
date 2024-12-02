@@ -1,5 +1,5 @@
 import pytest
-from calculate import calc, InvalidShapeError
+from calculate import calc, InvalidShapeError, InvalidFunctionError
 
 # Тесты для корректных данных
 
@@ -96,11 +96,12 @@ def test_invalid_function():
     func = 'volume'  # Некорректная функция
     size = [4]
 
-    # Act
-    result = calc(fig, func, size)
-
-    # Assert
-    assert result == "Invalid function"  # Ожидаем сообщение об ошибке
+    # Act & Assert
+    with pytest.raises(InvalidFunctionError) as exc_info:  # Сохраняем информацию о выброшенном исключении
+        calc(fig, func, size)
+    
+    # Проверяем, что исключение содержит нужное сообщение
+    assert str(exc_info.value) == "Invalid function: volume"
 
 def test_invalid_size_for_square():
     # Arrange
