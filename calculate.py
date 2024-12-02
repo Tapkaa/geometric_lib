@@ -10,24 +10,33 @@ sizes = {
     'triangle-perimeter': 3, 'triangle-area': 3
 }
 
+class InvalidShapeError(Exception):
+    pass
+
+class InvalidFunctionError(Exception):
+    pass
+
+class InvalidParametersError(Exception):
+    pass
+
 def calc(fig, func, size):
     if fig not in figs:
-        return "Invalid shape"
+        raise InvalidShapeError(f"Invalid shape: {fig}")
     if func not in funcs:
-        return "Invalid function"
+        raise InvalidFunctionError(f"Invalid function: {func}")
 
     required_size = sizes.get(f'{fig}-{func}')
     if required_size is None:
-        return f"Invalid combination of {fig} and {func}"
+        raise InvalidParametersError(f"Invalid combination of {fig} and {func}")
     
     if len(size) != required_size:
-        return f"Invalid parameters for {fig}"
+        raise InvalidParametersError(f"Invalid parameters for {fig}. Expected {required_size} but got {len(size)}.")
 
     try:
         result = eval(f'{fig}.{func}(*{size})')
         return result
     except Exception as e:
-        return str(e)
+        raise Exception(f"Error during calculation: {str(e)}")
 
 if __name__ == "__main__":
     func = ''
@@ -43,5 +52,8 @@ if __name__ == "__main__":
     while len(size) != sizes.get(f"{func}-{fig}", 1):
         size = list(map(int, input("Input figure sizes separated by space, 1 for circle and square\n").split(' ')))
 
-    result = calc(fig, func, size)
-    print(f'{func} of {fig} is {result}')
+    try:
+        result = calc(fig, func, size)
+        print(f'{func} of {fig} is {result}')
+    except (InvalidShapeError, InvalidFunctionError, InvalidParametersError, Exception) as e:
+        print(f"Error: {e}")
