@@ -22,7 +22,7 @@ def calc(fig, func, size):
     'triangle-perimeter': 3, 'triangle-area': 3
 }
 
-key = f'{fig}-{operation}'
+key = f'{fig}-{func}'
 
 if key in sizes and len(size) != sizes[key]:
     return f"Invalid parameters for {fig}"
