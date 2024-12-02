@@ -10,7 +10,6 @@ class InvalidParametersError(Exception):
 class CalculationError(Exception):
     pass
 
-
 figs = ['circle', 'square', 'triangle']
 funcs = ['perimeter', 'area']
 sizes = {
@@ -19,6 +18,39 @@ sizes = {
     'triangle-perimeter': 3, 'triangle-area': 3
 }
 
+def circle_perimeter(r):
+    return 2 * 3.14159 * r
+
+def circle_area(r):
+    return 3.14159 * r ** 2
+
+def square_perimeter(s):
+    return 4 * s
+
+def square_area(s):
+    return s ** 2
+
+def triangle_perimeter(a, b, c):
+    return a + b + c
+
+def triangle_area(a, b, c):
+    p = (a + b + c) / 2
+    return (p * (p - a) * (p - b) * (p - c)) ** 0.5
+
+functions = {
+    'circle': {
+        'perimeter': circle_perimeter,
+        'area': circle_area
+    },
+    'square': {
+        'perimeter': square_perimeter,
+        'area': square_area
+    },
+    'triangle': {
+        'perimeter': triangle_perimeter,
+        'area': triangle_area
+    }
+}
 
 def calc(fig, func, size):
     if fig not in figs:
@@ -37,7 +69,7 @@ def calc(fig, func, size):
         raise InvalidParametersError(f"Invalid parameters for triangle: expected 3 parameters, got {len(size)}")
     
     try:
-        result = eval(f'{fig}.{func}(*{size})')
+        result = eval(f'functions["{fig}"]["{func}"](*size)')
         return result
     except Exception as e:
         raise CalculationError(f"Error during calculation: {str(e)}")
