@@ -14,6 +14,9 @@ on:
 jobs:
   python-ci:
     runs-on: ubuntu-latest
+    env:
+      FULL_NAME: "Garifullin Vadim Salavatovich"
+      GROUP_NAMBER: "M3117"
 
     steps:
       - name: Checkout code
@@ -21,9 +24,9 @@ jobs:
 
       - name: Output personal information
         run: |
-          echo "Full Name: Garifullin Vadim Salavatovich"
-          echo "Group Number: 3117"
-          echo "GitHub username: $GITHUB_ACTOR"
+          echo "Full Name: ${{ env.FULL_NAME }}"
+          echo "Group Number: ${{ env.GROUP_NAMBER }}"
+          echo "GitHub username: ${{ github.actor }}"
 
       - name: Set up Python 3.13
         uses: actions/setup-python@v4
