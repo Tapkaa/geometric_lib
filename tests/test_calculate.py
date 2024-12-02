@@ -134,9 +134,10 @@ def test_invalid_size_for_triangle():
     fig = 'triangle'
     func = 'area'
     size = [3, 4]  # Треугольник требует 3 стороны
-
-    # Act
-    result = calc(fig, func, size)
-
-    # Assert
-    assert result == "Invalid parameters for triangle"  # Ожидаем сообщение об ошибке
+    
+    # Act & Assert
+    with pytest.raises(InvalidParametersError) as exc_info:  # Поймать исключение
+        calc(fig, func, size)
+    
+    # Проверяем, что исключение содержит правильное сообщение
+    assert str(exc_info.value) == "Invalid parameters for triangle: expected 3 parameters, got 2"
