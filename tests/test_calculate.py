@@ -1,143 +1,119 @@
 import pytest
-from calculate import calc, InvalidShapeError, InvalidFunctionError, InvalidParametersError
+from calculate import calc
+from math import pi
 
-# Тесты для корректных данных
 
-def test_square_perimeter():
-    # Arrange
-    fig = 'square'
-    func = 'perimeter'
-    size = [4]  # Сторона квадрата
-
-    # Act
-    result = calc(fig, func, size)
-
-    # Assert
-    assert result == 16  # Периметр квадрата с стороной 4 = 4 * 4
-
-def test_square_area():
-    # Arrange
-    fig = 'square'
-    func = 'area'
-    size = [4]  # Сторона квадрата
-
-    # Act
-    result = calc(fig, func, size)
-
-    # Assert
-    assert result == 16  # Площадь квадрата с стороной 4 = 4^2
-
-def test_circle_perimeter():
-    # Arrange
-    fig = 'circle'
-    func = 'perimeter'
-    size = [5]  # Радиус круга
-
-    # Act
-    result = calc(fig, func, size)
-
-    # Assert
-    assert result == 31.41592653589793  # Периметр круга с радиусом 5 = 2 * 3.14159 * 5
 
 def test_circle_area():
-    # Arrange
     fig = 'circle'
     func = 'area'
-    size = [5]  # Радиус круга
+    size = [1]
+    res = calc(fig, func, size)
+    assert res == pi
 
-    # Act
-    result = calc(fig, func, size)
-
-    # Assert
-    assert result == 78.53981633974483  # Площадь круга с радиусом 5 = 3.14159 * 5^2
-
-def test_triangle_perimeter():
-    # Arrange
-    fig = 'triangle'
-    func = 'perimeter'
-    size = [3, 4, 5]  # Стороны треугольника
-
-    # Act
-    result = calc(fig, func, size)
-
-    # Assert
-    assert result == 12  # Периметр треугольника с длинами сторон 3, 4, 5
+def test_square_area():
+    fig = 'square'
+    func = 'area'
+    size = [1]
+    res = calc(fig, func, size)
+    assert res == 1
 
 def test_triangle_area():
-    # Arrange
     fig = 'triangle'
     func = 'area'
-    size = [3, 4, 5]  # Стороны треугольника
+    size = [5, 12, 13]
+    res = calc(fig, func, size)
+    assert res == 30
 
-    # Act
-    result = calc(fig, func, size)
-
-    # Assert
-    assert result == 6  # Площадь треугольника с длинами сторон 3, 4, 5 по формуле Герона
-
-# Тесты для некорректных данных
-
-def test_invalid_shape():
-    # Arrange
-    fig = 'pentagon'  # Некорректная фигура
+def test_circle_perimeter():
+    fig = 'circle'
     func = 'perimeter'
-    size = [5]
+    size = [1]
+    res = calc(fig, func, size)
+    assert res == 2 * pi
 
-    # Act & Assert
-    with pytest.raises(InvalidShapeError) as exc_info:  # Сохраняем информацию о выброшенном исключении
-        calc(fig, func, size)
-    
-    # Проверяем, что исключение содержит нужное сообщение
-    assert str(exc_info.value) == "Invalid shape: pentagon"
-
-def test_invalid_function():
-    # Arrange
+def test_square_perimeter():
     fig = 'square'
-    func = 'volume'  # Некорректная функция
-    size = [4]
+    func = 'perimeter'
+    size = [1]
+    res = calc(fig, func, size)
+    assert res == 4
 
-    # Act & Assert
-    with pytest.raises(InvalidFunctionError) as exc_info:  # Сохраняем информацию о выброшенном исключении
+def test_triangle_perimeter():
+    fig = 'triangle'
+    func = 'perimeter'
+    size = [5, 12, 13]
+    res = calc(fig, func, size)
+    assert res == 30
+
+
+
+def test_wrong_fig():
+    fig = 'rectangle'
+    func = 'area'
+    size = [1]
+    with pytest.raises(AssertionError):
         calc(fig, func, size)
-    
-    # Проверяем, что исключение содержит нужное сообщение
-    assert str(exc_info.value) == "Invalid function: volume"
 
-def test_invalid_size_for_square():
-    # Arrange
+def test_wrong_func():
+    fig = 'circle'
+    func = 'diagonal'
+    size = [1]
+    with pytest.raises(AssertionError):
+        calc(fig, func, size)
+
+def test_wrong_size():
     fig = 'square'
     func = 'area'
-    size = [4, 5]  # Слишком много параметров для квадрата
-    
-    # Act & Assert
-    with pytest.raises(InvalidParametersError) as exc_info:  # Сохраняем информацию о выброшенном исключении
+    size = [1, 2]
+    with pytest.raises(AssertionError):
         calc(fig, func, size)
-    
-    # Проверяем, что исключение содержит нужное сообщение
-    assert str(exc_info.value) == "Invalid parameters for square: expected 1 parameter, got 2"
 
-def test_invalid_size_for_circle():
-    # Arrange
+def test_neg_size_area_circle():
     fig = 'circle'
     func = 'area'
-    size = []  # Отсутствует параметр для круга
-    
-    # Act & Assert
-    with pytest.raises(InvalidParametersError) as exc_info:  # Поймать исключение
+    size = [-1]
+    with pytest.raises(AssertionError):
         calc(fig, func, size)
-    
-    # Проверяем, что исключение содержит правильное сообщение
-    assert str(exc_info.value) == "Invalid parameters for circle: expected 1 parameter, got 0"
 
-def test_invalid_size_for_triangle():
-    # Arrange
+def test_neg_size_area_square():
+    fig = 'square'
+    func = 'area'
+    size = [-1]
+    with pytest.raises(AssertionError):
+        calc(fig, func, size)
+
+def test_neg_size_area_triangle():
     fig = 'triangle'
     func = 'area'
-    size = [3, 4]  # Треугольник требует 3 стороны
-    
-    # Act & Assert
-    with pytest.raises(InvalidParametersError) as exc_info:  # Поймать исключение
+    size = [-5, -12, -13]
+    with pytest.raises(AssertionError):
         calc(fig, func, size)
-    
-    # Проверяем, что исключение содержит правильное сообщение
-    assert str(exc_info.value) == "Invalid parameters for triangle: expected 3 parameters, got 2"
+
+def test_neg_size_perimeter_circle():
+    fig = 'circle'
+    func = 'perimeter'
+    size = [-1]
+    with pytest.raises(AssertionError):
+        calc(fig, func, size)
+
+def test_neg_size_perimeter_square():
+    fig = 'square'
+    func = 'perimeter'
+    size = [-1]
+    with pytest.raises(AssertionError):
+        calc(fig, func, size)
+
+def test_neg_size_perimeter_triangle():
+    fig = 'triangle'
+    func = 'perimeter'
+    size = [-5, -12, -13]
+    with pytest.raises(AssertionError):
+        calc(fig, func, size)
+
+def test_wrong_size_triangle():
+    fig = 'triangle'
+    func = 'area'
+    size = [1, 2, 10]
+    with pytest.raises(AssertionError):
+        calc(fig, func, size)
