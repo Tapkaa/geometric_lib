@@ -17,25 +17,25 @@ sizes = {
 def calc(fig, func, size):
     # Проверка на допустимые фигуры и функции
     if fig not in figs:
-        raise ValueError(f"Invalid figure: {fig}")
+        raise AssertionError(f"Invalid figure: {fig}")
     if func not in funcs:
-        raise ValueError(f"Invalid function: {func}")
+        raise AssertionError(f"Invalid function: {func}")
 
     # Получаем ключ и ожидаемое количество параметров
     key = f'{fig}-{func}'
     expected_args = sizes.get(key)
     if expected_args is None:
-        raise ValueError(f"Invalid size configuration for {fig} and {func}")
+        raise AssertionError(f"Invalid size configuration for {fig} and {func}")
     if len(size) != expected_args:
-        raise ValueError(f"Expected {expected_args} parameters for {fig} {func}, but got {len(size)}")
+        raise AssertionError(f"Expected {expected_args} parameters for {fig} {func}, but got {len(size)}")
 
     if any(s <= 0 for s in size):
-        raise ValueError("All sizes must be positive numbers")
+        raise AssertionError("All sizes must be positive numbers")
 
     if fig == "triangle":
         a, b, c = size
         if not (a + b > c and a + c > b and b + c > a):
-            raise ValueError("The provided sides do not form a valid triangle")
+            raise AssertionError("The provided sides do not form a valid triangle")
         if func == 'area':
             p = (a + b + c) / 2 
             area = (p * (p - a) * (p - b) * (p - c)) ** 0.5 
@@ -55,7 +55,7 @@ def calc(fig, func, size):
         elif func == 'perimeter':
             return square.perimeter(*size)
 
-    raise ValueError(f"Unexpected error for {fig} {func}")
+    raise AssertionError(f"Unexpected error for {fig} {func}")
 
 
 def calc_with_eval(fig, func, size):
@@ -63,7 +63,7 @@ def calc_with_eval(fig, func, size):
         result = eval(f'{fig}.{func}(*{size})')
         return result
     except Exception as e:
-        raise ValueError(f"Error during calculation: {str(e)}")
+        raise AssertionError(f"Error during calculation: {str(e)}")
 
 
 if __name__ == "__main__":
@@ -86,7 +86,9 @@ if __name__ == "__main__":
         ).split()))
 
     try:
+        # Вычисление результата
         result = calc_with_eval(fig, func, size)
         print(f"Result: {result}")
-    except ValueError as e:
+    except AssertionError as e:
+        # Вывод ошибки в случае неудачи
         print(f"Error: {e}")
