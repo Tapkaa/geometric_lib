@@ -1,25 +1,36 @@
 import pytest
 from triangle import area, perimeter
 
-def test_triangle_area():
-    # Arrange
-    a, b, c = 3, 4, 5
+# Тестирование площади треугольника
 
-    # Act
-    result = area(a, b, c)
+def test_area():
+    x, y, z = 5, 12, 13
+    res = area(x, y, z)
+    assert res == 30
 
-    # Assert
-    s = (a + b + c) / 2
-    expected_result = (s * (s - a) * (s - b) * (s - c)) ** 0.5
-    assert result == pytest.approx(expected_result, rel=1e-9)
+def test_area_zero():
+    x, y, z = 0, 0, 0
+    res = area(x, y, z)
+    assert res == 0
 
-def test_triangle_perimeter():
-    # Arrange
-    a, b, c = 3, 4, 5
+def test_area_neg():
+    x, y, z = -5, -12, -13
+    with pytest.raises(AssertionError):
+        area(x, y, z)
 
-    # Act
-    result = perimeter(a, b, c)
+# Тестирование периметра треугольника
 
-    # Assert
-    expected_result = a + b + c
-    assert result == expected_result
+def test_perimeter():
+    x, y, z = 5, 12, 13
+    res = perimeter(x, y, z)
+    assert res == 30
+
+def test_perimeter_zero():
+    x, y, z = 0, 0, 0
+    res = perimeter(x, y, z)
+    assert res == 0
+
+def test_perimeter_neg():
+    x, y, z = -5, -12, -13
+    with pytest.raises(AssertionError):
+        perimeter(x, y, z)
