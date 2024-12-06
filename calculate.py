@@ -13,7 +13,7 @@ sizes = {
     'triangle-perimeter': 3
 }
 
-def calc_with_eval(fig, func, size):
+def calc(fig, func, size):
     try:
         # Формирование строки для вызова функции через eval
         if fig == 'triangle' and func == 'area':
