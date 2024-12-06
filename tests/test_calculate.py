@@ -3,7 +3,6 @@ from calculate import calc
 from math import pi
 
 
-
 def test_circle_area():
     fig = 'circle'
     func = 'area'
@@ -45,8 +44,6 @@ def test_triangle_perimeter():
     size = [5, 12, 13]
     res = calc(fig, func, size)
     assert res == 30
-
-
 
 def test_wrong_fig():
     fig = 'rectangle'
