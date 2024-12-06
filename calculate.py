@@ -13,53 +13,20 @@ sizes = {
     'triangle-perimeter': 3
 }
 
-
-def calc(fig, func, size):
-    # Проверка на допустимые фигуры и функции
-    if fig not in figs:
-        raise AssertionError(f"Invalid figure: {fig}")
-    if func not in funcs:
-        raise AssertionError(f"Invalid function: {func}")
-
-    # Получаем ключ и ожидаемое количество параметров
-    key = f'{fig}-{func}'
-    expected_args = sizes.get(key)
-    if expected_args is None:
-        raise AssertionError(f"Invalid size configuration for {fig} and {func}")
-    if len(size) != expected_args:
-        raise AssertionError(f"Expected {expected_args} parameters for {fig} {func}, but got {len(size)}")
-
-    if any(s <= 0 for s in size):
-        raise AssertionError("All sizes must be positive numbers")
-
-    if fig == "triangle":
-        a, b, c = size
-        if not (a + b > c and a + c > b and b + c > a):
-            raise AssertionError("The provided sides do not form a valid triangle")
-        if func == 'area':
-            p = (a + b + c) / 2 
-            area = (p * (p - a) * (p - b) * (p - c)) ** 0.5 
-            return area
-        elif func == 'perimeter':
-            return a + b + c
-
-    if fig == 'circle':
-        if func == 'area':
-            return circle.area(*size)
-        elif func == 'perimeter':
-            return circle.perimeter(*size)
-
-    if fig == 'square':
-        if func == 'area':
-            return square.area(*size)
-        elif func == 'perimeter':
-            return square.perimeter(*size)
-
-    raise AssertionError(f"Unexpected error for {fig} {func}")
-
-
 def calc_with_eval(fig, func, size):
     try:
+        # Формирование строки для вызова функции через eval
+        if fig == 'triangle' and func == 'area':
+            # Для треугольника, где функция площади вычисляется вручную, мы прописываем ее отдельно
+            a, b, c = size
+            p = (a + b + c) / 2 
+            area = (p * (p - a) * (p - b) * (p - c)) ** 0.5
+            return area
+        elif fig == 'triangle' and func == 'perimeter':
+            # Для периметра треугольника
+            return sum(size)
+
+        # Для других фигур используем eval
         result = eval(f'{fig}.{func}(*{size})')
         return result
     except Exception as e:
