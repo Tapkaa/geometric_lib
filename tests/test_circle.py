@@ -1,26 +1,39 @@
-import math
 import pytest
-from calculate import calc
+from math import pi
 from circle import area, perimeter
 
-def test_circle_area():
-    # Arrange
-    r = 5
 
-    # Act
-    result = area(r)
+def test_area():
+    radius = 1
+    res = area(radius)
+    assert res == pi
 
-    # Assert
-    expected_result = math.pi * r * r
-    assert result == pytest.approx(expected_result, rel=1e-9)
 
-def test_circle_perimeter():
-    # Arrange
-    r = 5
+def test_perimeter():
+    radius = 1
+    res = perimeter(radius)
+    assert res == 2 * pi
 
-    # Act
-    result = perimeter(r)
 
-    # Assert
-    expected_result = 2 * math.pi * r
-    assert result == pytest.approx(expected_result, rel=1e-9)
+def test_area_zero():
+    radius = 0
+    res = area(radius)
+    assert res == 0
+
+
+def test_perimeter_zero():
+    radius = 0
+    res = perimeter(radius)
+    assert res == 0
+
+
+def test_area_neg():
+    radius = -1
+    with pytest.raises(AssertionError):
+        area(radius)
+
+
+def test_perimeter_neg():
+    radius = -1
+    with pytest.raises(AssertionError):
+        perimeter(radius)
